@@ -1,5 +1,6 @@
 package ui;
 
+import scene.DisplayOption;
 import scene.Scene;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 public class DisplayGraphics extends Canvas {
     private final Scene scene;
+    private DisplayOption displayOption = DisplayOption.FILLED;
 
     public DisplayGraphics(Scene scene) {
         this.scene = scene;
@@ -24,7 +26,11 @@ public class DisplayGraphics extends Canvas {
     public void paint(Graphics graphics) {
         setBackground(Color.BLACK);
         setForeground(Color.PINK);
-        scene.getSceneObjects().forEach(sceneObject -> sceneObject.draw((Graphics2D) graphics));
+        scene.getSceneObjects().forEach(sceneObject -> sceneObject.draw((Graphics2D) graphics, displayOption));
+    }
+
+    public DisplayOption getDisplayOption() {
+        return displayOption;
     }
 
     public void saveToFile() {
@@ -49,5 +55,12 @@ public class DisplayGraphics extends Canvas {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void switchDisplayOption() {
+        displayOption = displayOption.equals(DisplayOption.FILLED)
+                ? DisplayOption.EDGES
+                : DisplayOption.FILLED;
+        repaint();
     }
 }

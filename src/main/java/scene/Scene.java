@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scene {
-    private static final List<SceneObject> SCENE_OBJECTS = new ArrayList<>();
     private static final double width = 100;
     private static final double height = 100;
     private static final double depth = 100;
@@ -14,75 +13,82 @@ public class Scene {
     private static final double plusY = 10;
     private static final double minZ = 1000;
     private static final double plusZ = 1120;
+    private final List<SceneObject> sceneObjects = new ArrayList<>();
 
-    static {
-        SCENE_OBJECTS.add(new Cuboid(-minX, -minY, minZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(plusX, plusY, minZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(plusX, -minY, minZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(-minX, plusY, minZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(-minX, -minY, plusZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(plusX, plusY, plusZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(plusX, -minY, plusZ, height, width, depth));
-        SCENE_OBJECTS.add(new Cuboid(-minX, plusY, plusZ, height, width, depth));
+    public Scene() {
+        sceneObjects.add(new Cuboid(-minX, -minY, minZ, height, width, depth));
+        sceneObjects.add(new Cuboid(plusX, plusY, minZ, height, width, depth));
+        sceneObjects.add(new Cuboid(plusX, -minY, minZ, height, width, depth));
+        sceneObjects.add(new Cuboid(-minX, plusY, minZ, height, width, depth));
+        sceneObjects.add(new Cuboid(-minX, -minY, plusZ, height, width, depth));
+        sceneObjects.add(new Cuboid(plusX, plusY, plusZ, height, width, depth));
+        sceneObjects.add(new Cuboid(plusX, -minY, plusZ, height, width, depth));
+        sceneObjects.add(new Cuboid(-minX, plusY, plusZ, height, width, depth));
     }
 
     public List<SceneObject> getSceneObjects() {
-        return SCENE_OBJECTS;
+        sceneObjects.sort(SceneObject::compareTo);
+        return sceneObjects;
     }
 
     public void moveObserverUp() {
-        SCENE_OBJECTS.forEach(SceneObject::moveDown);
+        sceneObjects.forEach(SceneObject::moveDown);
     }
 
     public void moveObserverDown() {
-        SCENE_OBJECTS.forEach(SceneObject::moveUp);
+        sceneObjects.forEach(SceneObject::moveUp);
     }
 
     public void moveObserverLeft() {
-        SCENE_OBJECTS.forEach(SceneObject::moveRight);
+        sceneObjects.forEach(SceneObject::moveRight);
     }
 
     public void moveObserverRight() {
-        SCENE_OBJECTS.forEach(SceneObject::moveLeft);
+        sceneObjects.forEach(SceneObject::moveLeft);
     }
 
     public void moveObserverForward() {
-        SCENE_OBJECTS.forEach(SceneObject::moveBack);
+        sceneObjects.forEach(SceneObject::moveBack);
     }
 
     public void moveObserverBack() {
-        SCENE_OBJECTS.forEach(SceneObject::moveForward);
+        sceneObjects.forEach(SceneObject::moveForward);
     }
 
     public void zoomIn() {
-        SCENE_OBJECTS.forEach(SceneObject::zoomIn);
+        sceneObjects.forEach(SceneObject::zoomIn);
     }
 
     public void zoomOut() {
-        SCENE_OBJECTS.forEach(SceneObject::zoomOut);
+        sceneObjects.forEach(SceneObject::zoomOut);
     }
 
     public void rotateOXRight() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOXRight);
+        sceneObjects.forEach(SceneObject::rotateOXRight);
     }
 
     public void rotateOXLeft() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOXLeft);
+        sceneObjects.forEach(SceneObject::rotateOXLeft);
     }
 
     public void rotateOYRight() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOYRight);
+        sceneObjects.forEach(SceneObject::rotateOYRight);
     }
 
     public void rotateOYLeft() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOYLeft);
+        sceneObjects.forEach(SceneObject::rotateOYLeft);
     }
 
     public void rotateOZRight() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOZRight);
+        sceneObjects.forEach(SceneObject::rotateOZRight);
     }
 
     public void rotateOZLeft() {
-        SCENE_OBJECTS.forEach(SceneObject::rotateOZLeft);
+        sceneObjects.forEach(SceneObject::rotateOZLeft);
+    }
+
+    public boolean canMoveForward() {
+        return sceneObjects.stream()
+                .noneMatch(SceneObject::isCollapsingWithUser);
     }
 }

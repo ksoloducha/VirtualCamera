@@ -40,6 +40,7 @@ public class ActionsWindow extends JFrame {
         rotationsLayout.setHgap(10);
         try {
             var cameraImage = getImage("/icons/photo.png");
+            var displayOptionImage = getImage("/icons/displayOption.png");
             var zoomInImage = getImage("/icons/zoomin.png");
             var zoomOutImage = getImage("/icons/zoomout.png");
             var upImage = getImage("/icons/up.png");
@@ -55,6 +56,7 @@ public class ActionsWindow extends JFrame {
             var rotateOZRightImage = getImage("/icons/rotateOZright.png");
             var rotateOZLeftImage = getImage("/icons/rotateOZleft.png");
             setupButton(cameraImage, cameraPanel, SceneTransformations::onTakePhoto);
+            setupButton(displayOptionImage, cameraPanel, SceneTransformations::onSwitchDisplayOption);
             setupButton(upImage, directionsPanel, SceneTransformations::onMoveUp);
             setupButton(downImage, directionsPanel, SceneTransformations::onMoveDown);
             setupButton(leftImage, directionsPanel, SceneTransformations::onMoveLeft);

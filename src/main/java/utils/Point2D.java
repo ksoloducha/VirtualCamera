@@ -11,11 +11,11 @@ public class Point2D {
         this.y = Y_SHIFT - y;
     }
 
-    public double getX() {
+    public double x() {
         return x;
     }
 
-    public double getY() {
+    public double y() {
         return y;
     }
 }

@@ -6,7 +6,7 @@ public class SceneActionThread implements Runnable {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Runnable action;
 
-    public void start(Runnable action) {
+    public void start(Runnable action) throws InterruptedException {
         this.action = action;
         Thread worker = new Thread(this);
         worker.start();
@@ -22,10 +22,14 @@ public class SceneActionThread implements Runnable {
         while (running.get()) {
             action.run();
             try {
-                Thread.sleep(50000);
+                Thread.currentThread().join(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean isRunning() {
+        return running.get();
     }
 }

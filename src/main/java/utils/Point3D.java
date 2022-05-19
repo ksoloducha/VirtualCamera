@@ -2,41 +2,66 @@ package utils;
 
 import org.ejml.simple.SimpleMatrix;
 
-public class Point3D {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+public class Point3D implements Comparable<Point3D> {
     private final TransformationMatrices matrices;
-    private double x;
-    private double y;
-    private double z;
+    private final Map<Coordinates3D, Double> coordinates;
 
     public Point3D(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        coordinates = new HashMap<>();
+        coordinates.put(Coordinates3D.X, x);
+        coordinates.put(Coordinates3D.Y, y);
+        coordinates.put(Coordinates3D.Z, z);
         matrices = new TransformationMatrices();
     }
 
-    public double getX() {
-        return x;
+    public static Point3D average(List<Point3D> nodes) {
+        double x = getAverageCoord(Point3D::x, nodes);
+        double y = getAverageCoord(Point3D::y, nodes);
+        double z = getAverageCoord(Point3D::z, nodes);
+        return new Point3D(x, y, z);
+    }
+
+    private static double getAverageCoord(Function<Point3D, Double> valueSupplier, List<Point3D> nodes) {
+        return nodes.stream()
+                .map(valueSupplier)
+                .reduce(0.0, Double::sum);
+    }
+
+    public double x() {
+        return coordinates.get(Coordinates3D.X);
     }
 
     public void setX(double x) {
-        this.x = x;
+        coordinates.put(Coordinates3D.X, x);
     }
 
-    public double getY() {
-        return y;
+    public double y() {
+        return coordinates.get(Coordinates3D.Y);
     }
 
     public void setY(double y) {
-        this.y = y;
+        coordinates.put(Coordinates3D.Y, y);
     }
 
-    public double getZ() {
-        return z;
+    public double z() {
+        return coordinates.get(Coordinates3D.Z);
     }
 
     public void setZ(double z) {
-        this.z = z;
+        coordinates.put(Coordinates3D.Z, z);
+    }
+
+    public double get(Coordinates3D coord) {
+        return coordinates.get(coord);
+    }
+
+    public void set(Coordinates3D coord, double value) {
+        coordinates.put(coord, value);
     }
 
     public Point2D project(double observerDistance) {
@@ -56,9 +81,9 @@ public class Point3D {
     }
 
     public void zoom(double zoomStep) {
-        x *= zoomStep;
-        y *= zoomStep;
-        z *= zoomStep;
+        setX(x() * zoomStep);
+        setY(y() * zoomStep);
+        setZ(z() * zoomStep);
     }
 
     public void rotateOX(double step) {
@@ -79,12 +104,25 @@ public class Point3D {
     private void rotate(SimpleMatrix rotationMatrix) {
         var coordinatesVector = matrices.getNormalizedCoordinates(this);
         var rotationResult = rotationMatrix.mult(coordinatesVector);
-        this.x = rotationResult.get(0);
-        this.y = rotationResult.get(1);
-        this.z = rotationResult.get(2);
+        setX(rotationResult.get(0));
+        setY(rotationResult.get(1));
+        setZ(rotationResult.get(2));
     }
 
     public Point3D getFurther(Point3D other) {
-        return this.getZ() > other.getZ() ? this : other;
+        return this.z() > other.z() ? this : other;
+    }
+
+    @Override
+    public int compareTo(Point3D other) {
+        return Double.compare(this.distanceToPoint0(), other.distanceToPoint0());
+    }
+
+    public double distanceToPoint0() {
+        return Math.sqrt(x() * x() + y() * y() + z() * z());
+    }
+
+    public boolean isVisible() {
+        return z() >= 0;
     }
 }

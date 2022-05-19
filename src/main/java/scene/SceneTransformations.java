@@ -26,6 +26,7 @@ public class SceneTransformations {
         keyActionMap.put(KeyEvent.VK_N, SceneTransformations::onRotateOZRight);
         keyActionMap.put(KeyEvent.VK_Q, SceneTransformations::onZoomIn);
         keyActionMap.put(KeyEvent.VK_A, SceneTransformations::onZoomOut);
+        keyActionMap.put(KeyEvent.VK_P, SceneTransformations::onSwitchDisplayOption);
     }
 
     public static void setScene(Scene scene) {
@@ -65,8 +66,10 @@ public class SceneTransformations {
     }
 
     public static void onMoveForward() {
-        scene.moveObserverForward();
-        displayGraphics.repaint();
+        if (displayGraphics.getDisplayOption().equals(DisplayOption.FILLED) && scene.canMoveForward()) {
+            scene.moveObserverForward();
+            displayGraphics.repaint();
+        }
     }
 
     public static void onMoveBack() {
@@ -112,5 +115,9 @@ public class SceneTransformations {
     public static void onZoomOut() {
         scene.zoomOut();
         displayGraphics.repaint();
+    }
+
+    public static void onSwitchDisplayOption() {
+        displayGraphics.switchDisplayOption();
     }
 }

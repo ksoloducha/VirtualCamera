@@ -1,13 +1,15 @@
 package scene;
 
+import utils.Point3D;
+
 import java.awt.Graphics2D;
 
-public interface SceneObject {
+public interface SceneObject extends Comparable<SceneObject> {
     double MOVE_STEP = 5;
     double ZOOM_STEP = 1.25;
     double ROTATION_STEP = 0.01;
 
-    void draw(Graphics2D graphics);
+    void draw(Graphics2D graphics, DisplayOption displayOption);
 
     void moveDown();
 
@@ -36,4 +38,8 @@ public interface SceneObject {
     void rotateOZRight();
 
     void rotateOZLeft();
+
+    Point3D centerPoint();
+
+    boolean isCollapsingWithUser();
 }

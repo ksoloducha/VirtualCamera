@@ -5,8 +5,8 @@ import ui.ActionsWindow;
 import ui.DisplayGraphics;
 import ui.MainWindow;
 
-import javax.swing.SwingUtilities;
-import java.awt.KeyboardFocusManager;
+import javax.swing.*;
+import java.awt.*;
 
 public class Launcher {
     public static void main(String[] args) {

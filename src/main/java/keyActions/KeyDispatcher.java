@@ -19,8 +19,16 @@ public class KeyDispatcher implements KeyEventDispatcher {
     }
 
     private void handleKeyPressed(KeyEvent e) {
-        if (SceneTransformations.keyActionMap().containsKey(e.getKeyCode())) {
+        if (!actionThread.isRunning() && SceneTransformations.keyActionMap().containsKey(e.getKeyCode())) {
+            startKeyAction(e);
+        }
+    }
+
+    private void startKeyAction(KeyEvent e) {
+        try {
             actionThread.start(SceneTransformations.keyActionMap().get(e.getKeyCode()));
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
         }
     }
 

@@ -18,7 +18,7 @@ public class Line {
     }
 
     public Line getProjection() {
-        if (a.getZ() >= 0 && b.getZ() >= 0) {
+        if (a.z() >= 0 && b.z() >= 0) {
             return new Line(a, b);
         }
         var crossingPoint = findCrossingPointWithXY();
@@ -26,12 +26,12 @@ public class Line {
     }
 
     private Point3D findCrossingPointWithXY() {
-        var x = a.getX() + (b.getX() - a.getX()) * a.getZ() / (a.getZ() - b.getZ());
-        var y = a.getY() + (b.getY() - a.getY()) * a.getZ() / (a.getZ() - b.getZ());
+        var x = a.x() + (b.x() - a.x()) * a.z() / (a.z() - b.z());
+        var y = a.y() + (b.y() - a.y()) * a.z() / (a.z() - b.z());
         return new Point3D(x, y, 0.01);
     }
 
     public boolean isVisible() {
-        return a.getZ() >= 0 || b.getZ() >= 0;
+        return a.z() >= 0 || b.z() >= 0;
     }
 }

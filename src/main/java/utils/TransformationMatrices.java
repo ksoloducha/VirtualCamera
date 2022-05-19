@@ -19,9 +19,9 @@ public class TransformationMatrices {
 
     public SimpleMatrix getNormalizedCoordinates(Point3D point) {
         var data = new double[4][1];
-        data[0][0] = point.getX();
-        data[1][0] = point.getY();
-        data[2][0] = point.getZ();
+        data[0][0] = point.x();
+        data[1][0] = point.y();
+        data[2][0] = point.z();
         data[3][0] = 1.0;
         return new SimpleMatrix(data);
     }
