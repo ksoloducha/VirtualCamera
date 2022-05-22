@@ -1,8 +1,8 @@
 ﻿# VirtualCamera
 
-##Keys
+## Keys
 
-####Move
+#### Move
 
 * up - move forward
 * down - move back
@@ -11,7 +11,7 @@
 * W - move up
 * S - move down
 
-####Rotate
+#### Rotate
 * Z - rotate OX left
 * X - rotate OX right
 * C - rotate OY left
@@ -19,7 +19,7 @@
 * B - rotate OZ left
 * N - rotate OZ right
 
-####Other actions
+#### Other actions
 
 * Q - zoom in
 * A - zoom out
