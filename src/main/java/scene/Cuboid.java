@@ -1,11 +1,14 @@
 package scene;
 
-import utils.Line;
-import utils.Point3D;
-import utils.Polygon3D;
+import draw.EdgesPainter;
+import draw.FilledPainter;
+import draw.Painter;
+import geometry.Line;
+import geometry.Point3D;
+import geometry.Polygon3D;
+import geometry.Projectable3D;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.*;
 import java.util.List;
@@ -77,44 +80,23 @@ public class Cuboid implements SceneObject, Comparable<SceneObject> {
 
     @Override
     public void draw(Graphics2D graphics, DisplayOption displayOption) {
+        var painter = getPainter(displayOption, graphics);
+        var elements = getElementsToDraw(displayOption);
+        painter.paint(elements);
+    }
+
+    private List<? extends Projectable3D> getElementsToDraw(DisplayOption displayOption) {
         if (displayOption.equals(DisplayOption.EDGES)) {
-            drawVisibleEdges(graphics);
-        } else if (displayOption.equals(DisplayOption.FILLED)) {
-            drawVisibleWalls(graphics);
+            return edges;
         }
+        return walls;
     }
 
-    private void drawVisibleWalls(Graphics2D graphics) {
-        walls.forEach(wall -> {
-            if (wall.isVisible()) {
-                drawWall(wall, graphics);
-            }
-        });
-    }
-
-    private void drawWall(Polygon3D wall, Graphics2D graphics) {
-        var projectedNodes = wall.getProjectedNodes(observerDistance);
-        var path = new Path2D.Double();
-        path.moveTo(projectedNodes.get(0).x(), projectedNodes.get(0).y());
-        projectedNodes.forEach(node -> path.lineTo(node.x(), node.y()));
-        path.closePath();
-        graphics.setColor(wall.getColor());
-        graphics.fill(path);
-    }
-
-    private void drawVisibleEdges(Graphics2D graphics) {
-        edges.forEach(edge -> {
-            if (edge.isVisible()) {
-                drawEdge(edge, graphics);
-            }
-        });
-    }
-
-    private void drawEdge(Line edge, Graphics2D graphics) {
-        var projectedEdge = edge.getProjection();
-        var a = projectedEdge.getA().project(observerDistance);
-        var b = projectedEdge.getB().project(observerDistance);
-        graphics.draw(new Line2D.Double(a.x(), a.y(), b.x(), b.y()));
+    private Painter getPainter(DisplayOption displayOption, Graphics2D graphics) {
+        if (displayOption.equals(DisplayOption.EDGES)) {
+            return new EdgesPainter(observerDistance, graphics);
+        }
+        return new FilledPainter(observerDistance, graphics);
     }
 
     private void sortWalls() {
@@ -221,5 +203,15 @@ public class Cuboid implements SceneObject, Comparable<SceneObject> {
     public boolean isCollapsingWithUser() {
         return nodes.stream()
                 .anyMatch(node -> node.z() <= 5.0);
+    }
+
+    @Override
+    public List<? extends Projectable3D> getEdges() {
+        return edges;
+    }
+
+    @Override
+    public List<? extends Projectable3D> getWalls() {
+        return walls;
     }
 }

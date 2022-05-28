@@ -1,4 +1,4 @@
-import keyActions.KeyDispatcher;
+import keyactions.KeyDispatcher;
 import scene.Scene;
 import scene.SceneTransformations;
 import ui.ActionsWindow;

@@ -66,10 +66,11 @@ public class SceneTransformations {
     }
 
     public static void onMoveForward() {
-        if (displayGraphics.getDisplayOption().equals(DisplayOption.FILLED) && scene.canMoveForward()) {
-            scene.moveObserverForward();
-            displayGraphics.repaint();
+        if (displayGraphics.getDisplayOption().equals(DisplayOption.FILLED) && !scene.canMoveForward()) {
+            return;
         }
+        scene.moveObserverForward();
+        displayGraphics.repaint();
     }
 
     public static void onMoveBack() {

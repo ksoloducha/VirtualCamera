@@ -1,8 +1,10 @@
 package scene;
 
-import utils.Point3D;
+import geometry.Point3D;
+import geometry.Projectable3D;
 
 import java.awt.Graphics2D;
+import java.util.List;
 
 public interface SceneObject extends Comparable<SceneObject> {
     double MOVE_STEP = 5;
@@ -42,4 +44,8 @@ public interface SceneObject extends Comparable<SceneObject> {
     Point3D centerPoint();
 
     boolean isCollapsingWithUser();
+
+    List<? extends Projectable3D> getEdges();
+
+    List<? extends Projectable3D> getWalls();
 }

@@ -1,4 +1,4 @@
-package keyActions;
+package keyactions;
 
 import scene.SceneTransformations;
 

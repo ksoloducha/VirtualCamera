@@ -25,7 +25,6 @@ public class DisplayGraphics extends Canvas {
     @Override
     public void paint(Graphics graphics) {
         setBackground(Color.BLACK);
-        setForeground(Color.PINK);
         scene.getSceneObjects().forEach(sceneObject -> sceneObject.draw((Graphics2D) graphics, displayOption));
     }
 
