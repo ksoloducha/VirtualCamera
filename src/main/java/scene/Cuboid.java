@@ -1,15 +1,14 @@
 package scene;
 
-import draw.EdgesPainter;
-import draw.FilledPainter;
-import draw.Painter;
-import geometry.Line;
-import geometry.Point3D;
-import geometry.Polygon3D;
-import geometry.Projectable3D;
+import draw.Drawer;
+import draw.EdgesDrawer;
+import draw.FilledDrawer;
+import geometry.threedimensional.Line3D;
+import geometry.threedimensional.Point3D;
+import geometry.threedimensional.Polygon3D;
+import geometry.threedimensional.Projectable3D;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
 import java.util.*;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class Cuboid implements SceneObject, Comparable<SceneObject> {
     }
 
     private final List<Point3D> nodes = new ArrayList<>(8);
-    private final List<Line> edges = new ArrayList<>(12);
+    private final List<Line3D> edges = new ArrayList<>(12);
     private final List<Polygon3D> walls = new ArrayList<>(6);
     private final double width;
     private final double height;
@@ -64,25 +63,25 @@ public class Cuboid implements SceneObject, Comparable<SceneObject> {
     }
 
     private void initializeEdges() {
-        edges.add(new Line(nodes.get(0), nodes.get(1)));
-        edges.add(new Line(nodes.get(1), nodes.get(3)));
-        edges.add(new Line(nodes.get(3), nodes.get(2)));
-        edges.add(new Line(nodes.get(2), nodes.get(0)));
-        edges.add(new Line(nodes.get(4), nodes.get(5)));
-        edges.add(new Line(nodes.get(5), nodes.get(7)));
-        edges.add(new Line(nodes.get(7), nodes.get(6)));
-        edges.add(new Line(nodes.get(6), nodes.get(4)));
-        edges.add(new Line(nodes.get(0), nodes.get(4)));
-        edges.add(new Line(nodes.get(1), nodes.get(5)));
-        edges.add(new Line(nodes.get(2), nodes.get(6)));
-        edges.add(new Line(nodes.get(3), nodes.get(7)));
+        edges.add(new Line3D(nodes.get(0), nodes.get(1)));
+        edges.add(new Line3D(nodes.get(1), nodes.get(3)));
+        edges.add(new Line3D(nodes.get(3), nodes.get(2)));
+        edges.add(new Line3D(nodes.get(2), nodes.get(0)));
+        edges.add(new Line3D(nodes.get(4), nodes.get(5)));
+        edges.add(new Line3D(nodes.get(5), nodes.get(7)));
+        edges.add(new Line3D(nodes.get(7), nodes.get(6)));
+        edges.add(new Line3D(nodes.get(6), nodes.get(4)));
+        edges.add(new Line3D(nodes.get(0), nodes.get(4)));
+        edges.add(new Line3D(nodes.get(1), nodes.get(5)));
+        edges.add(new Line3D(nodes.get(2), nodes.get(6)));
+        edges.add(new Line3D(nodes.get(3), nodes.get(7)));
     }
 
     @Override
     public void draw(Graphics2D graphics, DisplayOption displayOption) {
         var painter = getPainter(displayOption, graphics);
         var elements = getElementsToDraw(displayOption);
-        painter.paint(elements);
+        painter.draw(elements);
     }
 
     private List<? extends Projectable3D> getElementsToDraw(DisplayOption displayOption) {
@@ -92,11 +91,11 @@ public class Cuboid implements SceneObject, Comparable<SceneObject> {
         return walls;
     }
 
-    private Painter getPainter(DisplayOption displayOption, Graphics2D graphics) {
+    private Drawer getPainter(DisplayOption displayOption, Graphics2D graphics) {
         if (displayOption.equals(DisplayOption.EDGES)) {
-            return new EdgesPainter(observerDistance, graphics);
+            return new EdgesDrawer(observerDistance, graphics);
         }
-        return new FilledPainter(observerDistance, graphics);
+        return new FilledDrawer(observerDistance, graphics);
     }
 
     private void sortWalls() {

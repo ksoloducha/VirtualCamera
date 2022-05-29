@@ -1,7 +1,7 @@
 package scene;
 
-import geometry.Point3D;
-import geometry.Projectable3D;
+import geometry.threedimensional.Point3D;
+import geometry.threedimensional.Projectable3D;
 
 import java.awt.Graphics2D;
 import java.util.List;
